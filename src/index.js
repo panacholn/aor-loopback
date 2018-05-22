@@ -101,7 +101,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                     }
                 };
                 url = `${apiUrl}/${resource}?${queryParameters({filter: JSON.stringify(query)})}`;
-                options.method = 'PUT';
+                options.method = 'PATCH';
                 options.body = JSON.stringify(params.data);
                 break;
             default:
