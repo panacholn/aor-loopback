@@ -100,12 +100,9 @@ export default (apiUrl, httpClient = fetchJson) => {
                         inq: params.ids
                     }
                 };
-                url = `${apiUrl}/${resource}/update`;
+                url = `${apiUrl}/${resource}/update?${queryParameters({filter: JSON.stringify(query)})}`;
                 options.method = 'POST';
-                options.body = JSON.stringify({
-                    data: params.data,
-                    where: query.where,
-                });
+                options.body = JSON.stringify(params.data);
                 break;
             default:
                 throw new Error(`Unsupported fetch action type ${type}`);
