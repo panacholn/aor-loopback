@@ -7,6 +7,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    UPDATE_MANY,
 } from './types';
 export * from './authClient';
 
@@ -91,6 +92,17 @@ export default (apiUrl, httpClient = fetchJson) => {
             case DELETE:
                 url = `${apiUrl}/${resource}/${params.id}`;
                 options.method = 'DELETE';
+                break;
+            case UPDATE_MANY:
+                const query = {};
+                query['where'] = {
+                    id: {
+                        inq: params.ids
+                    }
+                };
+                url = `${apiUrl}/${resource}?${queryParameters({filter: JSON.stringify(query)})}`;
+                options.method = 'PUT';
+                options.body = JSON.stringify(params.data);
                 break;
             default:
                 throw new Error(`Unsupported fetch action type ${type}`);
