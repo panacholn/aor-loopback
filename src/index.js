@@ -100,7 +100,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                         inq: params.ids
                     }
                 };
-                url = `${apiUrl}/${resource}/update?${queryParameters({filter: JSON.stringify(query)})}`;
+                url = `${apiUrl}/${resource}/update?${queryParameters({where: JSON.stringify(query.where)})}`;
                 options.method = 'POST';
                 options.body = JSON.stringify(params.data);
                 break;
