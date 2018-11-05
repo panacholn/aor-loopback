@@ -18,16 +18,23 @@ export const authClient = (loginApiUrl, noAccessPage = '/login') => {
                 })
                 .then(({ ttl, ...data }) => {
                     storage.save('lbtoken', data, ttl);
+                    let roleName = ''
+                    if (data.roles && data.roles.length) {
+                        roleName = data.roles[0].name
+                    }
+                    storage.save('role', roleName, ttl);
                 });
         }
         if (type === 'AUTH_LOGOUT') {
             storage.remove('lbtoken');
+            storage.remove('role');
             return Promise.resolve();
         }
         if (type === 'AUTH_ERROR') {
             const status  = params.message.status;
             if (status === 401 || status === 403) {
                 storage.remove('lbtoken');
+                storage.remove('role');
                 return Promise.reject();
             }
             return Promise.resolve();
@@ -40,6 +47,10 @@ export const authClient = (loginApiUrl, noAccessPage = '/login') => {
                 storage.remove('lbtoken');
                 return Promise.reject({ redirectTo: noAccessPage });
             }
+        }
+        if (type === 'AUTH_GET_PERMISSIONS') {
+            const role = storage.load('role');
+            return Promise.resolve(role);
         }
         return Promise.reject('Unknown method');
     };

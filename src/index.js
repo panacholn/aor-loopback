@@ -7,6 +7,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
     UPDATE_MANY,
 } from './types';
 export * from './authClient';
@@ -91,6 +92,16 @@ export default (apiUrl, httpClient = fetchJson) => {
                 break;
             case DELETE:
                 url = `${apiUrl}/${resource}/${params.id}`;
+                options.method = 'DELETE';
+                break;
+            case DELETE_MANY:
+                var listId2 = params.ids.map(function (id) {
+                    return { 'id': id };
+                });
+                var _query4 = {
+                    'where': { 'or': listId2 }
+                };
+                url = `${apiUrl}/${resource}?${queryParameters({filter: JSON.stringify(_query4)})}`;
                 options.method = 'DELETE';
                 break;
             case UPDATE_MANY:
