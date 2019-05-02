@@ -141,7 +141,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                     total: parseInt(headers.get('x-total-count').split('/').pop(), 10),
                 };
             case CREATE:
-                return { data: { ...params.data, id: json.id } };
+                return { data: json };
             default:
                 return { data: json };
         }
